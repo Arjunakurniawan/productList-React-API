@@ -1,0 +1,142 @@
+<html>
+  <head>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@17.0.0/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.12.4/babel.js"></script>
+
+    <script type="text/babel">
+      const rootElement = document.getElementById("root");
+
+      function ProductList() {
+        return (
+          <>
+            <div className="container-fluid w-75 h-75 mt-5">
+              <p className="fs-5 mx-2">All Product</p>
+              <div className="dropdown d-flex justify-content-end">
+                <button
+                  className="btn btn-sm btn-outline-secondary dropdown-toggle px-3 mb-3 rounded"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i className="bi bi-funnel-fill pe-1"></i>
+                  Filter
+                </button>
+                <ul className="dropdown-menu">
+                  <li>
+                    <a className="dropdown-item"> Asc</a>
+                  </li>
+                  <li>
+                    <a className="dropdown-item">Desc</a>
+                  </li>
+                </ul>
+                <button
+                  className="btn btn-sm btn-outline-secondary dropdown-toggle mx-2 mb-3 px-3 rounded"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i className="bi bi-sort-alpha-up pe-1"></i>
+                  Sort
+                </button>
+                <ul className="dropdown-menu">
+                  <li>
+                    <a className="dropdown-item"> Asc</a>
+                  </li>
+                  <li>
+                    <a className="dropdown-item">Desc</a>
+                  </li>
+                </ul>
+              </div>
+              <div className="row">
+                <div className="col-md">
+                  <div className="card" style={{ width: "23rem" }}>
+                    <img
+                      src="https://seosecret.id/placeholder/300x300/d5d5d5/584959"
+                      className="card-img-top"
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">Card title</h5>
+                      <p className="card-text">
+                        Some quick example text to build on the card title and
+                        make up the bulk of the card's content.
+                      </p>
+                      <a href="#" className="btn btn-primary">
+                        Go somewhere
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md">
+                  <div className="card" style={{ width: "23rem" }}>
+                    <img
+                      src="https://seosecret.id/placeholder/300x300/d5d5d5/584959"
+                      className="card-img-top"
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">Card title</h5>
+                      <p className="card-text">
+                        Some quick example text to build on the card title and
+                        make up the bulk of the card's content.
+                      </p>
+                      <a href="#" className="btn btn-primary">
+                        Go somewhere
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md">
+                  <div className="card" style={{ width: "23rem" }}>
+                    <img
+                      src="https://seosecret.id/placeholder/300x300/d5d5d5/584959"
+                      className="card-img-top"
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">Card title</h5>
+                      <p className="card-text">
+                        Some quick example text to build on the card title and
+                        make up the bulk of the card's content.
+                      </p>
+                      <a href="#" className="btn btn-primary">
+                        Go somewhere
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        );
+      }
+
+      function App() {
+        return (
+          <>
+            <ProductList />
+          </>
+        );
+      }
+
+      ReactDOM.render(<App />, rootElement);
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
