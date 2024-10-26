@@ -29,37 +29,120 @@
       const rootElement = document.getElementById("root");
 
       function ProductList() {
+        const [inputValue, setInputValue] = React.useState("");
         const [products, setProducts] = React.useState([]);
 
         React.useEffect(() => {
-          fetch("https://dummyjson.com/products?limit=9")
+          const endPoint = inputValue
+            ? `https://dummyjson.com/products/search?q=${inputValue}`
+            : `https://dummyjson.com/products?limit=9`;
+
+          fetch(endPoint)
             .then((res) => res.json())
-            .then((data) => setProducts(data.products));
-        }, []);
+            .then((data) => setProducts(data.products))
+            .catch((err) => console.error("failed fetching data!"));
+        }, [inputValue]);
+
+        function onInputChange(e) {
+          setInputValue(e.target.value);
+        }
 
         return (
           <>
             <div className="container-fluid w-75 h-auto mt-5">
               <div className="dropdown d-flex justify-content-between px-3">
                 <p className="pt-5 fs-5">All Product</p>
-                <div class="button-group mt-5">
+                <input
+                  type="text"
+                  className="form-control w-50 h-25 mt-5"
+                  placeholder="Search....."
+                  value={inputValue}
+                  onChange={onInputChange}
+                />
+                <div className="button-group mt-5">
                   <button
                     className="btn btn-sm btn-outline-secondary dropdown-toggle px-3 mb-3 rounded"
                     type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
+                    data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop"
                   >
                     <i className="bi bi-funnel pe-1"></i>
                     Filter
                   </button>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <a className="dropdown-item">Asc</a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item">Desc</a>
-                    </li>
-                  </ul>
+                  <div
+                    class="modal fade"
+                    id="staticBackdrop"
+                    data-bs-backdrop="static"
+                    data-bs-keyboard="false"
+                    tabindex="-1"
+                    aria-labelledby="staticBackdropLabel"
+                    aria-hidden="true"
+                  >
+                    <div className="modal-dialog">
+                      <div className="modal-content">
+                        <div className="modal-header">
+                          <h1
+                            className="modal-title fs-5 position-relative"
+                            id="staticBackdropLabel"
+                          >
+                            Filters
+                          </h1>
+                          <button
+                            type="button"
+                            className="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                        <div className="modal-body">
+                          <div className="row">
+                            <div className="col-md-2">
+                              <h6 className="mb-3 border-bottom">Category</h6>
+                              <div className="form-check">
+                                <input
+                                  type="checkbox"
+                                  className="form-check-input"
+                                />
+                                <label for="" className="form-check-label mb-2">
+                                  Beauty
+                                </label>
+                                <input
+                                  type="checkbox"
+                                  className="form-check-input"
+                                />
+                                <label for="" className="form-check-label mb-2">
+                                  furniture
+                                </label>
+                                <input
+                                  type="checkbox"
+                                  className="form-check-input"
+                                />
+                                <label for="" className="form-check-label mb-2">
+                                  Vegetables
+                                </label>
+                                <input
+                                  type="checkbox"
+                                  className="form-check-input"
+                                />
+                                <label for="" className="form-check-label">
+                                  Electronic
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="modal-footer">
+                          <button type="button" class="btn btn-secondary">
+                            Reset
+                          </button>
+                          <button type="button" class="btn btn-primary">
+                            Show 50 Result
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <button
                     className="btn btn-sm btn-outline-secondary dropdown-toggle mx-2 mb-3 px-3 rounded"
                     type="button"
@@ -71,7 +154,7 @@
                   </button>
                   <ul className="dropdown-menu">
                     <li>
-                      <a className="dropdown-item"> Asc</a>
+                      <a className="dropdown-item">Asc</a>
                     </li>
                     <li>
                       <a className="dropdown-item">Desc</a>
@@ -81,11 +164,15 @@
               </div>
               <div className="row mx-3">
                 {products.map((product) => (
-                  <div className="col-lg-4 col-md-12 mb-3" key={product.id}>
+                  <div className="col-lg-4 col-md-6 mb-3" key={product.id}>
                     <div className="card">
-                      <img src={product.images} className="card-img-top" />
-                      <span class="badge text-bg-primary position-absolute top-50 ms-3 mt-5 p-2 text-white rounded">
-                        Discount {product.discountPercentage}%
+                      <img
+                        src={product.thumbnail}
+                        className="card-img-top"
+                        style={{ widht: "22rem" }}
+                      />
+                      <span class="badge text-bg-primary position-relative top-50 w-50 ms-3 mt-5 p-2 text-white rounded">
+                        Up To {product.discountPercentage}% off
                       </span>
                       <div className="card-body">
                         <h5 className="card-title fw-bold">{product.title}</h5>
@@ -94,6 +181,7 @@
                           ${product.price}
                         </p>
                         <a href="#" className="btn btn-primary float-end">
+                          <i class="bi bi-cart-plus pe-2"></i>
                           Add To Cart
                         </a>
                       </div>
