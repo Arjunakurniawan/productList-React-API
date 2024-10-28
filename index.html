@@ -33,9 +33,7 @@
         const [products, setProducts] = React.useState([]);
 
         React.useEffect(() => {
-          const endPoint = inputValue
-            ? `https://dummyjson.com/products/search?q=${inputValue}`
-            : `https://dummyjson.com/products?limit=9`;
+          const endPoint = `https://dummyjson.com/products/search?q=${inputValue}&limit=10&/search/category`;
 
           fetch(endPoint)
             .then((res) => res.json())
@@ -59,108 +57,44 @@
                   value={inputValue}
                   onChange={onInputChange}
                 />
-                <div className="button-group mt-5">
-                  <button
-                    className="btn btn-sm btn-outline-secondary dropdown-toggle px-3 mb-3 rounded"
-                    type="button"
-                    data-bs-toggle="modal"
-                    data-bs-target="#staticBackdrop"
-                  >
-                    <i className="bi bi-funnel pe-1"></i>
-                    Filter
-                  </button>
-                  <div
-                    class="modal fade"
-                    id="staticBackdrop"
-                    data-bs-backdrop="static"
-                    data-bs-keyboard="false"
-                    tabindex="-1"
-                    aria-labelledby="staticBackdropLabel"
-                    aria-hidden="true"
-                  >
-                    <div className="modal-dialog">
-                      <div className="modal-content">
-                        <div className="modal-header">
-                          <h1
-                            className="modal-title fs-5 position-relative"
-                            id="staticBackdropLabel"
-                          >
-                            Filters
-                          </h1>
-                          <button
-                            type="button"
-                            className="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                          ></button>
-                        </div>
-                        <div className="modal-body">
-                          <div className="row">
-                            <div className="col-md-2">
-                              <h6 className="mb-3 border-bottom">Category</h6>
-                              <div className="form-check">
-                                <input
-                                  type="checkbox"
-                                  className="form-check-input"
-                                />
-                                <label for="" className="form-check-label mb-2">
-                                  Beauty
-                                </label>
-                                <input
-                                  type="checkbox"
-                                  className="form-check-input"
-                                />
-                                <label for="" className="form-check-label mb-2">
-                                  furniture
-                                </label>
-                                <input
-                                  type="checkbox"
-                                  className="form-check-input"
-                                />
-                                <label for="" className="form-check-label mb-2">
-                                  Vegetables
-                                </label>
-                                <input
-                                  type="checkbox"
-                                  className="form-check-input"
-                                />
-                                <label for="" className="form-check-label">
-                                  Electronic
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="modal-footer">
-                          <button type="button" class="btn btn-secondary">
-                            Reset
-                          </button>
-                          <button type="button" class="btn btn-primary">
-                            Show 50 Result
-                          </button>
-                        </div>
-                      </div>
-                    </div>
+                {products.map((product) => (
+                  <div className="button-group mt-5">
+                    <button
+                      className="btn btn-sm btn-outline-secondary dropdown-toggle mx-2 mb-3 px-3 rounded"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <i className="bi bi-sort-alpha-up pe-1"></i>
+                      Sort By : {product.sort}
+                    </button>
+                    <ul className="dropdown-menu">
+                      <li>
+                        <a className="dropdown-item">category</a>
+                      </li>
+                      <li>
+                        <a className="dropdown-item">title</a>
+                      </li>
+                    </ul>
+                    <button
+                      className="btn btn-sm btn-outline-secondary dropdown-toggle mx-2 mb-3 px-3 rounded"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <i className="bi bi-sort-alpha-up pe-1"></i>
+                      Order By: Asc
+                    </button>
+                    <ul className="dropdown-menu">
+                      <li>
+                        <a className="dropdown-item">Asc</a>
+                      </li>
+                      <li>
+                        <a className="dropdown-item">Desc</a>
+                      </li>
+                    </ul>
                   </div>
-
-                  <button
-                    className="btn btn-sm btn-outline-secondary dropdown-toggle mx-2 mb-3 px-3 rounded"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <i className="bi bi-sort-alpha-up pe-1"></i>
-                    Sort
-                  </button>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <a className="dropdown-item">Asc</a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item">Desc</a>
-                    </li>
-                  </ul>
-                </div>
+                ))}
               </div>
               <div className="row mx-3">
                 {products.map((product) => (
