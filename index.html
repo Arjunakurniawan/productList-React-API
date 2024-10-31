@@ -31,18 +31,28 @@
       function ProductList() {
         const [inputValue, setInputValue] = React.useState("");
         const [products, setProducts] = React.useState([]);
+        const [sortBy, setSortBy] = React.useState("");
+        const [order, setOrder] = React.useState("asc");
 
         React.useEffect(() => {
-          const endPoint = `https://dummyjson.com/products/search?q=${inputValue}&limit=10&/search/category`;
+          const endPoint = `https://dummyjson.com/products/search?q=${inputValue}&sortBy=${sortBy}&order=${order}`;
 
           fetch(endPoint)
             .then((res) => res.json())
             .then((data) => setProducts(data.products))
             .catch((err) => console.error("failed fetching data!"));
-        }, [inputValue]);
+        }, [inputValue, sortBy, order]);
 
         function onInputChange(e) {
           setInputValue(e.target.value);
+        }
+
+        function handleSortChange(e) {
+          setSortBy(e.target.innerText.toLowerCase());
+        }
+
+        function handleOrderChange(e) {
+          setOrder(e.target.innerText.toLowerCase());
         }
 
         return (
@@ -57,44 +67,54 @@
                   value={inputValue}
                   onChange={onInputChange}
                 />
-                {products.map((product) => (
-                  <div className="button-group mt-5">
-                    <button
-                      className="btn btn-sm btn-outline-secondary dropdown-toggle mx-2 mb-3 px-3 rounded"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i className="bi bi-sort-alpha-up pe-1"></i>
-                      Sort By : {product.sort}
-                    </button>
-                    <ul className="dropdown-menu">
-                      <li>
-                        <a className="dropdown-item">category</a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item">title</a>
-                      </li>
-                    </ul>
-                    <button
-                      className="btn btn-sm btn-outline-secondary dropdown-toggle mx-2 mb-3 px-3 rounded"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i className="bi bi-sort-alpha-up pe-1"></i>
-                      Order By: Asc
-                    </button>
-                    <ul className="dropdown-menu">
-                      <li>
-                        <a className="dropdown-item">Asc</a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item">Desc</a>
-                      </li>
-                    </ul>
-                  </div>
-                ))}
+                <div className="button-group mt-5">
+                  <button
+                    className="btn btn-sm btn-outline-secondary dropdown-toggle mx-2 mb-3 px-3 rounded"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Sort By: {sortBy}
+                  </button>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <a className="dropdown-item" onClick={handleSortChange}>
+                        stock
+                      </a>
+                    </li>
+                    <li>
+                      <a className="dropdown-item" onClick={handleSortChange}>
+                        price
+                      </a>
+                    </li>
+                    <li>
+                      <a className="dropdown-item" onClick={handleSortChange}>
+                        category
+                      </a>
+                    </li>
+                  </ul>
+                  <button
+                    className="btn btn-sm btn-outline-secondary dropdown-toggle mx-2 mb-3 px-3 rounded"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i className="bi bi-sort-alpha-up pe-1"></i>
+                    Order By: {order}
+                  </button>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <a className="dropdown-item" onClick={handleOrderChange}>
+                        Asc
+                      </a>
+                    </li>
+                    <li>
+                      <a className="dropdown-item" onClick={handleOrderChange}>
+                        Desc
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
               <div className="row mx-3">
                 {products.map((product) => (
@@ -124,7 +144,6 @@
                 ))}
               </div>
             </div>
-            ;
           </>
         );
       }
