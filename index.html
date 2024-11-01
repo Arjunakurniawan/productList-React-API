@@ -33,16 +33,19 @@
         const [products, setProducts] = React.useState([]);
         const [sortBy, setSortBy] = React.useState("");
         const [order, setOrder] = React.useState("asc");
-        const [] = react.useState()
+        const [currentPage, setCurrentPage] = React.useState(1);
+        const [itemsPerPage, setItemsPerPage] = React.useState(10);
 
         React.useEffect(() => {
-          const endPoint = `https://dummyjson.com/products/search?q=${inputValue}&sortBy=${sortBy}&order=${order}`;
+          const endPoint = `https://dummyjson.com/products/search?q=${inputValue}&sortBy=${sortBy}&order=${order}&limit=${itemsPerPage}&skip=${
+            (currentPage - 1) * itemsPerPage
+          }`;
 
           fetch(endPoint)
             .then((res) => res.json())
             .then((data) => setProducts(data.products))
             .catch((err) => console.error("failed fetching data!"));
-        }, [inputValue, sortBy, order]);
+        }, [inputValue, sortBy, order, currentPage, itemsPerPage]);
 
         function onInputChange(e) {
           setInputValue(e.target.value);
@@ -80,7 +83,7 @@
                   <ul className="dropdown-menu">
                     <li>
                       <a className="dropdown-item" onClick={handleSortChange}>
-                        stock
+                        rating
                       </a>
                     </li>
                     <li>
@@ -145,27 +148,26 @@
                 ))}
                 <nav aria-label="Page navigation example">
                   <ul class="pagination">
-                    <li class="page-item">
-                      <a class="page-link" href="#" aria-label="Previous">
+                    <li
+                      class={`page-item ${currentPage === 1 ? "disabled" : ""}`}
+                    >
+                      <a
+                        class="page-link"
+                        onClick={() => setCurrentPage(currentPage - 1)}
+                        href="#"
+                        aria-label="Previous"
+                      >
                         <span aria-hidden="true">&laquo;</span>
                       </a>
                     </li>
                     <li class="page-item">
                       <a class="page-link" href="#">
-                        1
+                        {currentPage}
                       </a>
                     </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">
-                        2
-                      </a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">
-                        3
-                      </a>
-                    </li>
-                    <li class="page-item">
+                    <li
+                      class={`page-item ${currentPage === 0 ? "disabled" : ""}`}
+                    >
                       <a class="page-link" href="#" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                       </a>
