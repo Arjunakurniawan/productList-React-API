@@ -34,7 +34,11 @@
         const [sortBy, setSortBy] = React.useState("");
         const [order, setOrder] = React.useState("asc");
         const [currentPage, setCurrentPage] = React.useState(1);
-        const [itemsPerPage, setItemsPerPage] = React.useState(10);
+        const [itemsPerPage, setItemsPerPage] = React.useState(15);
+        const [totalItems, setTotalItems] = React.useState(0);
+
+        //skip itu adalah contoh kita mulai dari 0 berarti di mulai dari index 0
+        //limit itu adalah setiap kita mulainya dari mana itu berapa limitnya
 
         React.useEffect(() => {
           const endPoint = `https://dummyjson.com/products/search?q=${inputValue}&sortBy=${sortBy}&order=${order}&limit=${itemsPerPage}&skip=${
@@ -43,7 +47,10 @@
 
           fetch(endPoint)
             .then((res) => res.json())
-            .then((data) => setProducts(data.products))
+            .then((data) => {
+              setProducts(data.products);
+              setTotalItems(data.total);
+            })
             .catch((err) => console.error("failed fetching data!"));
         }, [inputValue, sortBy, order, currentPage, itemsPerPage]);
 
@@ -58,6 +65,20 @@
         function handleOrderChange(e) {
           setOrder(e.target.innerText.toLowerCase());
         }
+
+        function goToPage(page) {
+          setCurrentPage(page);
+        }
+
+        function goToPrevious() {
+          if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+        }
+
+        function goToNext() {
+          if (currentPage < 1) setCurrentPage((prev) => prev + 1);
+          const totalPages = Math.ceil(totalItems / itemsPerPage);
+        }
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
 
         return (
           <>
@@ -153,22 +174,40 @@
                     >
                       <a
                         class="page-link"
-                        onClick={() => setCurrentPage(currentPage - 1)}
+                        onClick={goToPrevious}
                         href="#"
                         aria-label="Previous"
                       >
                         <span aria-hidden="true">&laquo;</span>
                       </a>
                     </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">
-                        {currentPage}
-                      </a>
-                    </li>
+                    {[...Array(totalPages)].map((_, index) => (
+                      <li
+                        class={`page-item ${
+                          currentPage === index + 1 ? "active" : ""
+                        }`}
+                        key={index}
+                      >
+                        <a
+                          class="page-link"
+                          href="#"
+                          onClick={() => goToPage(index + 1)}
+                        >
+                          {index + 1}
+                        </a>
+                      </li>
+                    ))}
                     <li
-                      class={`page-item ${currentPage === 0 ? "disabled" : ""}`}
+                      class={`page-item ${
+                        currentPage === totalPages ? "disabled" : ""
+                      }`}
                     >
-                      <a class="page-link" href="#" aria-label="Next">
+                      <a
+                        class="page-link"
+                        onClick={goToNext}
+                        href="#"
+                        aria-label="Next"
+                      >
                         <span aria-hidden="true">&raquo;</span>
                       </a>
                     </li>
